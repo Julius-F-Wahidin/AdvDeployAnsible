@@ -1,0 +1,34 @@
+---
+# Bad ansible! This playbook is an example of poor/bad practices!
+# Bad practices may include:
+#
+#   Poor formatting and structure
+#   Poor use of YAML - but good enough to parse
+#   Inconsistent style
+#   Incorrect use of modules
+#   Poor module choice
+#   Unclear names
+#   Hard coding / poor use of variables
+#   Roles - what are roles?
+#   Bare variables
+#   No use of handlers
+
+- hosts: all
+  become: true
+  roles:
+    - common
+
+- hosts: frontends
+  become: true
+  roles:
+    - haproxy
+
+- hosts: apps
+  become: true
+  roles:
+    - tomcat
+
+- hosts: appdbs
+  become: true
+  roles:
+    - postgres
