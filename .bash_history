@@ -186,3 +186,216 @@ vi main.yml
 exit
 ls
 sudo -i
+ls
+cd using-role/
+ls
+cd common/
+ls
+cd tasks/
+ls
+ls -l
+vi main.yml 
+cd ..
+ls
+cd ..
+ls
+cd haproxy/
+ls
+cd tasks/
+ls
+vi main.yml 
+cd ../../
+ls
+ls
+ls -l
+sudo su -
+ls
+cd using-role/
+ls
+cd ../bad-ansible/
+ls
+ls 3tier-bad/
+ls
+cp * ../using-role/
+mkdir ../using-role/3tier
+cp 3tier-bad/* ../using-role/3tier/
+pwd
+ls
+cd
+ls
+cd using-role/
+ls
+mv mail.org.yml main.org.yml
+mv mail.w1.yml main.w1.yml
+ls mail*
+ls main*
+ls -l main*
+vi main.yml
+ls
+pwd
+cd using-role
+ls
+vi main.yml
+ls
+vi ../bad-ansible/main.yml 
+ls
+ansible-playbook -i myinventory.file using-role/main.yml -e "GUID=${GUID}" --syntax-check
+cd ..
+ansible-playbook -i myinventory.file using-role/main.yml -e "GUID=${GUID}" --syntax-check
+pwd
+cd using-role/common/tasks/
+ls
+vi main.yml 
+pwd
+cd ..
+ls
+cd ..
+ls
+vi main.yml
+pwd
+cd ..
+ansible-playbook -i myinventory.file using-role/main.yml -e "GUID=${GUID}" --syntax-check
+vi using-role/haproxy/tasks/main.yml 
+vi using-role/tomcat/tasks/main.yml 
+vi using-role/postgres/tasks/main.yml 
+vi using-role/main.yml 
+rm using-role/.main.yml.swp 
+ansible-playbook -i myinventory.file using-role/main.yml -e "GUID=${GUID}" --syntax-check
+ansible-playbook -i myinventory.file using-role/main.yml
+vi using-role/haproxy/tasks/main.yml 
+ansible-playbook -i myinventory.file using-role/main.yml -e "GUID=${GUID}" --syntax-check
+ansible-playbook -i myinventory.file using-role/main.yml -e "GUID=${GUID}"
+ls
+cat myinventory.file 
+vi myinventory.file 
+pwd
+ls
+cd using-role/
+ls
+cd haproxy/
+ls
+cd templates/
+ls
+vi haproxy.cfg.j2 
+cd ..
+ls
+cd ..
+ls
+cd ..
+ls
+git commit -m "using roles"
+git add .
+git commit -m "using roles"
+git config --global user.name "Julius-F-Wahidin"
+git config --global user.password "Tpg123.."
+git commit -m "using roles"
+git push
+exit
+ls
+cd bad-ansible/
+ls
+view main.yml
+vi main.yml
+ls -l
+cd
+ls
+cd bad-ansible/
+ls
+vi main.yml
+ls
+cd ../using-role/
+ls
+pwd
+cd tomcat/
+ls
+cd templates/
+ls
+pwd
+mv ../../index.html.j2 .
+ls -l
+cd ../tasks/
+ls
+grep temp main.yml 
+vi main.yml
+cd ..
+ls
+cd ..
+ls
+ls -l
+pwd
+cd ..
+ls
+cd bad-ansible/
+ls
+pwd
+cd ..
+export GUID=c363
+ansible-playbook -i myinventory.file bad-ansible/main.yml -e "GUID=${GUID}"
+vi bad-ansible/main.yml 
+ansible-playbook -i myinventory.file bad-ansible/main.yml -e "GUID=${GUID}"
+pwd
+cd using-role/
+ls
+ls *jw
+ls *j2
+pwd
+cd postgres/
+ls
+cd tasks
+ls
+vi main.yml 
+cd ..
+cd common
+cd ../common/
+ls
+cd tasks
+ls
+grep file *
+vi main.yml
+cd ../files
+ls
+mv ../../3tier/open_three-tier-app.repo .
+ls -l
+cd ..
+cd .
+cd ..
+ls
+ls 3tier
+rm 3tier
+rmdir 3tier
+ls -l
+ls
+cd tomcat/tasks
+ls
+vi main.yml 
+cd
+cd using-role/
+mv haproxy.cfg.j2 haproxy/files/
+vi haproxy/tasks/main.yml 
+mv haproxy/files/haproxy.cfg.j2 haproxy/templates/
+pwd
+ls
+cp main.yml main.w2.yml
+vi main.yml
+ls
+pwd
+vi main.yml
+ps -ef | grep main
+ls
+cd using-role/
+ls
+cd postgres/
+ls
+cd tasks/
+ls
+vi main.yml 
+cd ..
+ls
+cd ..
+ls
+pwd
+ls
+cd ../bad-ansible/
+ls
+vi main.yml 
+vi main.yml

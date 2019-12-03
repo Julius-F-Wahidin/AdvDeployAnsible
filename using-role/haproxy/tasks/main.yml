@@ -4,18 +4,26 @@
   package:
     name: httpie
     state: latest
+  notify: restart_HAProxy
+
 - name: install HAProxy
   yum:
-    name=haproxy state=latest
-- name: enable HAProxy
-  service:
-    name: haproxy
-    state: started
+    name: haproxy 
+    state: latest
+  notify: restart_HAProxy
+   
+#- name: enable HAProxy
+#  service:
+#    name: haproxy
+#    state: started
+
 - name: configure haproxy
   template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
-- name: restart HAproxy
-  service:
-    name: haproxy
-    state: restarted
+  notify: restart_HAProxy
+
+#- name: restart_HAProxy
+#  service:
+#    name: haproxy
+#    state: restarted

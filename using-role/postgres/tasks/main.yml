@@ -1,7 +1,10 @@
+---
 - name: install postgres
   yum:
     name: postgresql-server
     state: latest
+  notify: restart_postgres
+
 - name: enable postgres at boot
   service:
     name: postgresql
@@ -11,12 +14,13 @@
   stat:
     path: /var/lib/pgsql/data/PG_VERSION
   register: pg_init
+
 - name: Initialize database if it it has not been done.
   command: postgresql-setup initdb
   when: pg_init.stat.exists == False
 
-- name: start postgres
-  service:
-    name: postgresql.service
-    state: started
+#- name: restart_postgres
+#  service:
+#    name: postgresql.service
+#    state: restarted
 

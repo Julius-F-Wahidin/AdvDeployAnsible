@@ -8,7 +8,7 @@
 # hlsearch on (H) or off (h):
 ~H
 # Last Search Pattern:
-~MSle0~/GUID
+~MSle0~/hosts
 
 # Last Substitute Search Pattern:
 ~MSle0&^  
@@ -53,98 +53,94 @@ $
 	#      src: ./open_three-tier-app.repo
 	#      dest: /etc/yum.repos.d/open_three-tier-app.repo
 ""1	LINE	0
-	  become: true
+	
 "2	LINE	0
-	- name: deploy postgres
-	  hosts: appdbs
-	  gather_facts: false
-	  become: true
-	  tasks:
 	
 "3	LINE	0
-	- name: deploy tomcat
-	  hosts: apps
-	  gather_facts: false
-	  become: true
-	
-	  tasks:
+	  when: pg_init.stat.exists == False
 "4	LINE	0
-	  tasks:
+	  command: postgresql-setup initdb
 "5	LINE	0
-	- name: deploy haproxy
-	  hosts: frontends
-	  gather_facts: false # remove later! speeds up testing
-	  become: true
-	
+	- name: Initialize database if it it has not been done.
 "6	LINE	0
-	  tasks:
-"7	LINE	0
+	- name: install postgres
+	  yum:
+	    name: postgresql-server
+	    state: latest
+	  notify: restart_postgres
 	
+	- name: enable postgres at boot
+	  service:
+	    name: postgresql
+	    enabled: yes
+	
+	- name: Check if postgress database has been initialized.
+	  stat:
+	    path: /var/lib/pgsql/data/PG_VERSION
+	  register: pg_init
+	
+"7	LINE	0
+	  template:
+	    src: haproxy.cfg.j2
+	    dest: /etc/haproxy/haproxy.cfg
+	  notify: restart_HAProxy
 "8	LINE	0
-	  become: true
+	#- name: enable HAProxy
+	#  service:
+	#    name: haproxy
+	#    state: started
+	
+	- name: configure haproxy
 "9	LINE	0
-	  gather_facts: true
+	- name: install HAProxy
+	  yum:
+	    name: haproxy 
+	    state: latest
+	  notify: restart_HAProxy
+	   
 "-	CHAR	0
-	yes
+	#
 
 # File marks:
-'0  16  23  ~/using-role/haproxy/templates/haproxy.cfg.j2
-'1  33  0  ~/myinventory.file
-'2  21  4  ~/using-role/haproxy/tasks/main.yml
-'3  1  0  ~/using-role/main.yml
-'4  34  2  ~/using-role/main.yml
-'5  21  4  ~/using-role/postgres/tasks/main.yml
-'6  26  4  ~/using-role/tomcat/tasks/main.yml
-'7  18  12  ~/using-role/main.yml
-'8  8  0  ~/using-role/common/tasks/main.yml
-'9  15  0  ~/bad-ansible/main.yml
+'0  5  4  ~/using-role/postgres/handlers/main.yml
+'1  25  0  ~/using-role/postgres/tasks/main.yml
+'2  7  0  ~/using-role/haproxy/handlers/main.yml
+'3  29  19  ~/using-role/haproxy/tasks/main.yml
+'4  54  0  ~/using-role/main.yml
+'5  34  0  ~/using-role/main.yml
+'6  17  2  ~/bad-ansible/main.yml
+'7  85  0  ~/bad-ansible/main.yml
+'8  85  13  ~/bad-ansible/main.yml
+'9  85  12  ~/bad-ansible/main.yml
 
 # Jumplist (newest first):
--'  16  23  ~/using-role/haproxy/templates/haproxy.cfg.j2
--'  1  0  ~/using-role/haproxy/templates/haproxy.cfg.j2
--'  33  0  ~/myinventory.file
--'  1  0  ~/myinventory.file
--'  21  4  ~/using-role/haproxy/tasks/main.yml
--'  1  0  ~/using-role/main.yml
+-'  5  4  ~/using-role/postgres/handlers/main.yml
+-'  1  0  ~/using-role/postgres/handlers/main.yml
+-'  25  0  ~/using-role/postgres/tasks/main.yml
+-'  23  2  ~/using-role/postgres/tasks/main.yml
+-'  7  0  ~/using-role/haproxy/handlers/main.yml
+-'  1  0  ~/using-role/haproxy/handlers/main.yml
+-'  29  19  ~/using-role/haproxy/tasks/main.yml
+-'  28  2  ~/using-role/haproxy/tasks/main.yml
+-'  54  0  ~/using-role/main.yml
 -'  34  2  ~/using-role/main.yml
--'  18  2  ~/using-role/main.yml
--'  21  4  ~/using-role/postgres/tasks/main.yml
--'  1  2  ~/using-role/postgres/tasks/main.yml
--'  5  2  ~/using-role/postgres/tasks/main.yml
--'  26  4  ~/using-role/tomcat/tasks/main.yml
--'  3  2  ~/using-role/tomcat/tasks/main.yml
--'  3  2  ~/using-role/haproxy/tasks/main.yml
--'  16  6  ~/using-role/haproxy/tasks/main.yml
--'  19  0  ~/using-role/main.yml
--'  21  0  ~/using-role/main.yml
--'  8  0  ~/using-role/common/tasks/main.yml
--'  6  6  ~/using-role/common/tasks/main.yml
--'  15  0  ~/bad-ansible/main.yml
--'  35  2  ~/using-role/main.yml
--'  25  2  ~/using-role/main.yml
--'  46  4  ~/bad-ansible/main.yml
--'  1  0  ~/using-role/haproxy/tasks/main.yml
--'  76  4  ~/bad-ansible/main.yml
--'  71  4  ~/bad-ansible/main.yml
--'  98  2  ~/bad-ansible/main.yml
--'  124  6  ~/bad-ansible/main.yml
--'  1  0  ~/using-role/tomcat/tasks/main.yml
--'  1  2  ~/bad-ansible/main.yml
--'  81  2  ~/bad-ansible/main.yml
--'  47  17  ~/bad-ansible/main.yml
--'  113  0  ~/bad-ansible/main.yml
--'  125  0  ~/bad-ansible/main.yml
+-'  1  0  ~/using-role/main.yml
 -'  17  2  ~/bad-ansible/main.yml
 -'  87  2  ~/bad-ansible/main.yml
 -'  56  2  ~/bad-ansible/main.yml
 -'  29  2  ~/bad-ansible/main.yml
+-'  1  0  ~/bad-ansible/main.yml
 -'  64  0  ~/bad-ansible/main.yml
+-'  116  0  ~/bad-ansible/main.yml
+-'  46  9  ~/bad-ansible/main.yml
 -'  90  7  ~/bad-ansible/main.yml
--'  86  0  ~/bad-ansible/main.yml
--'  53  0  ~/bad-ansible/main.yml
 -'  115  0  ~/bad-ansible/main.yml
+-'  85  0  ~/bad-ansible/main.yml
+-'  53  0  ~/bad-ansible/main.yml
+-'  105  0  ~/bad-ansible/main.yml
 -'  88  0  ~/bad-ansible/main.yml
 -'  24  6  ~/bad-ansible/main.yml
+-'  86  0  ~/bad-ansible/main.yml
 -'  106  0  ~/bad-ansible/mail.org.yml
 -'  139  0  ~/bad-ansible/mail.org.yml
 -'  140  0  ~/bad-ansible/mail.org.yml
@@ -154,7 +150,7 @@ $
 -'  103  2  ~/bad-ansible/mail.org.yml
 -'  1  0  ~/bad-ansible/mail.org.yml
 -'  1  0  ~/bad-ansible/main.org.yml
--'  122  11  ~/bad-ansible/main.yml
+-'  112  11  ~/bad-ansible/main.yml
 -'  26  0  ~/bad-ansible/main.yml
 -'  27  0  ~/bad-ansible/main.yml
 -'  1  0  ~/bad-ansible/main.org.yml
@@ -198,75 +194,115 @@ $
 -'  1  0  ~/bad-ansible/mail.org.yml
 -'  1  0  ~/bad-ansible/main.org.yml
 -'  1  0  ~/bad-ansible/main.org.yml
+-'  106  0  ~/bad-ansible/mail.org.yml
+-'  139  0  ~/bad-ansible/mail.org.yml
+-'  140  0  ~/bad-ansible/mail.org.yml
+-'  106  0  ~/bad-ansible/mail.org.yml
+-'  139  0  ~/bad-ansible/mail.org.yml
+-'  140  0  ~/bad-ansible/mail.org.yml
+-'  109  2  ~/bad-ansible/mail.org.yml
+-'  108  0  ~/bad-ansible/mail.org.yml
+-'  116  0  ~/bad-ansible/mail.org.yml
+-'  103  2  ~/bad-ansible/mail.org.yml
+-'  1  0  ~/bad-ansible/mail.org.yml
+-'  1  0  ~/bad-ansible/main.org.yml
+-'  12  16  ~/using-role/common/tasks/main.yml
+-'  1  0  ~/using-role/common/tasks/main.yml
+-'  17  2  ~/bad-ansible/main.yml
+-'  87  2  ~/bad-ansible/main.yml
+-'  56  2  ~/bad-ansible/main.yml
+-'  29  2  ~/bad-ansible/main.yml
+-'  1  0  ~/bad-ansible/main.yml
 
 # History of marks within files (newest to oldest):
+
+> ~/using-role/postgres/handlers/main.yml
+	"	5	4
+	.	6	0
+	+	2	0
+	+	3	0
+	+	4	0
+	+	5	0
+	+	6	0
+
+> ~/using-role/postgres/tasks/main.yml
+	"	25	0
+	^	25	1
+	.	25	0
+	+	2	0
+	+	2	2
+	+	2	0
+	+	2	0
+	+	2	0
+	+	2	2
+	+	3	2
+	+	4	2
+	+	5	2
+	+	20	0
+	+	21	0
+	+	22	0
+	+	8	24
+	+	8	0
+	+	2	0
+	+	1	2
+	+	17	0
+	+	6	26
+	+	22	16
+	+	25	12
+	+	22	0
+	+	23	0
+	+	24	0
+	+	25	0
+
+> ~/using-role/haproxy/handlers/main.yml
+	"	7	0
+	^	2	16
+	.	7	0
+	+	2	17
+	+	3	0
+	+	4	0
+	+	5	0
+	+	6	0
+	+	7	0
+
+> ~/using-role/haproxy/tasks/main.yml
+	"	29	19
+	^	26	20
+	.	26	19
+	+	30	0
+	+	30	0
+	+	22	11
+	+	3	0
+	+	11	17
+	+	12	10
+	+	11	9
+	+	14	2
+	+	15	0
+	+	16	0
+	+	17	0
+	+	18	0
+	+	19	0
+	+	25	0
+	+	8	0
+	+	8	0
+	+	7	0
+	+	14	0
+	+	13	0
+	+	24	0
+	+	26	0
+	+	27	0
+	+	28	0
+	+	29	0
+	+	26	19
+
+> ~/using-role/main.yml
+	"	54	0
 
 > ~/using-role/haproxy/templates/haproxy.cfg.j2
 	"	16	23
 
 > ~/myinventory.file
 	"	33	0
-
-> ~/using-role/haproxy/tasks/main.yml
-	"	21	4
-	.	3	0
-	+	22	0
-	+	22	0
-	+	16	11
-	+	3	0
-
-> ~/using-role/main.yml
-	"	34	2
-	.	32	0
-	+	20	12
-	+	16	11
-	+	21	2
-	+	25	0
-	+	20	0
-	+	18	0
-	+	25	0
-	+	25	12
-	+	25	0
-	+	26	2
-	+	35	0
-	+	25	0
-	+	23	0
-	+	35	0
-	+	35	11
-	+	35	0
-	+	35	0
-	+	35	2
-	+	35	0
-	+	28	0
-	+	35	0
-	+	33	0
-	+	34	13
-	+	35	0
-	+	19	0
-	+	18	0
-	+	17	0
-	+	22	0
-	+	27	0
-	+	32	0
-
-> ~/using-role/postgres/tasks/main.yml
-	"	21	4
-	.	1	0
-	+	1	0
-	+	1	2
-	+	1	0
-	+	1	0
-	+	1	0
-	+	1	2
-	+	2	2
-	+	3	2
-	+	4	2
-	+	16	0
-	+	17	0
-	+	18	0
-	+	5	24
-	+	5	0
-	+	1	0
 
 > ~/using-role/tomcat/tasks/main.yml
 	"	26	4
