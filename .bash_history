@@ -399,3 +399,49 @@ cd ../bad-ansible/
 ls
 vi main.yml 
 vi main.yml
+cd .ssh
+ls
+cat c363key.pem 
+exit
+ls
+cd using-role
+ls
+cd common
+ls
+cd ..
+cat common/tasks/main.yml 
+cat tomcat/tasks/main.yml 
+cat haproxy/tasks/main.yml 
+vi haproxy/tasks/main.yml
+cp haproxy/tasks/main.yml haproxy/handlers/main.yml
+vi haproxy/handlers/main.yml 
+vi postgres/tasks/main.yml
+cp postgres/tasks/main.yml postgres/handlers/main.yml 
+vi postgres/handlers/main.yml 
+cd ..
+pwd
+export GUID=c363
+ansible-playbook -i myinventory.file using-role/main.yml -e "GUID=${GUID}" --syntax-check
+ansible-playbook -i myinventory.file bad-ansible/main.yml -e "GUID=${GUID}"
+git add .
+git commit -m "adding handlers"
+git push 
+la
+cat myinventory.file 
+ls
+cd bad-ansible/
+ls
+grep GUID *
+ansible-playbook -i myinventory.file using-role/main.yml -m setup
+ansible-playbook -i myinventory.file using-role/main.yml -M setup
+cd ..
+ansible-playbook -i myinventory.file using-role/main.yml -M setup
+cd bad-ansible/
+ls
+grep GUID *
+export GUID=c363
+ansible -i myinventory.file apps -m setup 
+cd ..
+ansible -i myinventory.file apps -m setup 
+ansible -i myinventory.file apps -m setup  | grep c363
+exit
